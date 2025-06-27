@@ -26,3 +26,5 @@ sudo dd if="$IMAGE" of=$DISK_ID bs=1m status=progress
 sync
 
 echo "✅ Image successfully restored."
+
+exit 0

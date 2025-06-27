@@ -20,3 +20,5 @@ diskutil unmountDisk /dev/$DISK
 sudo diskutil eraseDisk FAT32 3DS MBRFormat /dev/$DISK
 
 echo "✅ SD card successfully formatted as FAT32 (MBR, 32KB)"
+
+exit 0

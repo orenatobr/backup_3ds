@@ -19,3 +19,5 @@ sudo dd if=$DISK_ID of="$DESTINATION" bs=1m status=progress
 sync
 
 echo "✅ Backup created at: $DESTINATION"
+
+exit 0
