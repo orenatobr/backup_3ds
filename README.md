@@ -8,6 +8,7 @@ This repository provides two scripts to **fully back up** and **restore** SD car
 
 - `backup_3ds.sh` – Creates a full `.img` image of your 3DS SD card
 - `restore_3ds.sh` – Restores a `.img` image back to your SD card
+- `format_3ds:sd.sh` – Format 3DS SD card properly
 
 ---
 
@@ -31,7 +32,7 @@ diskutil list
 
 Look for a line like:
 
-```
+```text
 /dev/disk5 (external, physical):
 ```
 
@@ -76,6 +77,23 @@ You will be prompted to confirm before overwriting the SD card.
 
 ---
 
+### ♻️ 4. Format 3DS SD card
+
+Edit `format_3ds_sd.sh`:
+
+- Confirm the correct disk ID
+
+Then run:
+
+```bash
+chmod +x format_3ds_sd.sh
+./format_3ds_sd.sh
+```
+
+You will be prompted to confirm before overwriting the SD card.
+
+---
+
 ## 🧩 VSCode Integration (Optional)
 
 You can now run these scripts directly from **Visual Studio Code** using `zsh` as the interpreter.
@@ -93,7 +111,9 @@ To enable this, add the following to your `.vscode/launch.json`:
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "zsh",
-      "args": ["${workspaceFolder}/backup_3ds.sh"],
+      "args": [
+        "${workspaceFolder}/backup_3ds.sh"
+      ],
       "console": "integratedTerminal"
     },
     {
@@ -101,7 +121,19 @@ To enable this, add the following to your `.vscode/launch.json`:
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "zsh",
-      "args": ["${workspaceFolder}/restore_3ds.sh"],
+      "args": [
+        "${workspaceFolder}/restore_3ds.sh"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Format 3DS SD Script",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "zsh",
+      "args": [
+        "${workspaceFolder}/format_3ds_sd.sh"
+      ],
       "console": "integratedTerminal"
     }
   ]
@@ -113,9 +145,11 @@ To enable this, add the following to your `.vscode/launch.json`:
 ### 💡 Tip
 
 - Make sure the scripts have executable permission:  
+
   ```bash
-  chmod +x backup_3ds.sh restore_3ds.sh
+  chmod +x backup_3ds.sh restore_3ds.sh format_3ds_sd.sh
   ```
+
 - Ensure `zsh` is installed (default in modern macOS versions).
 
 ---
