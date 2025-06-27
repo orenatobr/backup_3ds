@@ -20,6 +20,16 @@
         "${workspaceFolder}/restore_3ds.sh"
       ],
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Format 3DS SD Script",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "zsh",
+      "args": [
+        "${workspaceFolder}/format_3ds_sd.sh"
+      ],
+      "console": "integratedTerminal"
     }
   ]
 }
