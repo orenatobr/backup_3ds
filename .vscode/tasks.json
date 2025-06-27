@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run 3DS Backup Script",
+            "type": "shell",
+            "command": "zsh",
+            "args": [
+                "${workspaceFolder}/backup_3ds.sh"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run 3DS Restore Script",
+            "type": "shell",
+            "command": "zsh",
+            "args": [
+                "${workspaceFolder}/restore_3ds.sh"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -76,6 +76,50 @@ You will be prompted to confirm before overwriting the SD card.
 
 ---
 
+## 🧩 VSCode Integration (Optional)
+
+You can now run these scripts directly from **Visual Studio Code** using `zsh` as the interpreter.
+
+### ▶️ Running via `launch.json`
+
+To enable this, add the following to your `.vscode/launch.json`:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run 3DS Backup Script",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "zsh",
+      "args": ["${workspaceFolder}/backup_3ds.sh"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run 3DS Restore Script",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "zsh",
+      "args": ["${workspaceFolder}/restore_3ds.sh"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
+```
+
+> ⚠️ These scripts require `sudo`. You’ll be prompted to enter your password in the terminal during execution.
+
+### 💡 Tip
+
+- Make sure the scripts have executable permission:  
+  ```bash
+  chmod +x backup_3ds.sh restore_3ds.sh
+  ```
+- Ensure `zsh` is installed (default in modern macOS versions).
+
+---
+
 ## 💡 Tips
 
 - **Unmount the SD card** before using these scripts
