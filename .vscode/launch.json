@@ -5,31 +5,28 @@
       "name": "Run 3DS Backup Script",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "zsh",
-      "args": [
-        "${workspaceFolder}/backup_3ds.sh"
-      ],
-      "console": "integratedTerminal"
+      "program": "${workspaceFolder}/noop.js",
+      "preLaunchTask": "Run 3DS Backup Script",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     },
     {
       "name": "Run 3DS Restore Script",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "zsh",
-      "args": [
-        "${workspaceFolder}/restore_3ds.sh"
-      ],
-      "console": "integratedTerminal"
+      "program": "${workspaceFolder}/noop.js",
+      "preLaunchTask": "Run 3DS Restore Script",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     },
     {
       "name": "Format 3DS SD Script",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "zsh",
-      "args": [
-        "${workspaceFolder}/format_3ds_sd.sh"
-      ],
-      "console": "integratedTerminal"
+      "program": "${workspaceFolder}/noop.js",
+      "preLaunchTask": "Format 3DS SD Script",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
