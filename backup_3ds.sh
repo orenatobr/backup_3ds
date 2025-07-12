@@ -14,7 +14,7 @@ fi
 
 # Read disk name and output path from config
 DISK_NAME=$(grep '^disk_name:' config.yml | awk '{print $2}')
-OUTPUT_PATH=$(grep '^output_path:' config.yml | awk '{print $2}')
+OUTPUT_PATH=$(grep '^output_path:' config.yml | awk '{print $2}' | sed "s|^~|$HOME|")
 
 # Resolve /dev/diskX from volume name
 DISK_ID=$(diskutil list | grep "$DISK_NAME" | awk '{print "/dev/" $NF}' | sed 's/s[0-9]*$//')

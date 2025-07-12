@@ -8,7 +8,7 @@ fi
 
 # Read disk name and output path from config
 DISK_NAME=$(grep '^disk_name:' config.yml | awk '{print $2}')
-OUTPUT_PATH=$(grep '^output_path:' config.yml | awk '{print $2}')
+OUTPUT_PATH=$(grep '^output_path:' config.yml | awk '{print $2}' | sed "s|^~|$HOME|")
 
 # Find the most recent backup image
 IMAGE=$(ls -t "${OUTPUT_PATH}"/backup_3ds_*.img 2>/dev/null | head -n 1)
