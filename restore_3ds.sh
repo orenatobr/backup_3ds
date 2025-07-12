@@ -10,6 +10,13 @@ fi
 DISK_NAME=$(grep '^disk_name:' config.yml | awk '{print $2}')
 OUTPUT_PATH=$(grep '^output_path:' config.yml | awk '{print $2}' | sed "s|^~|$HOME|")
 
+# Check if DISK_NAME is a raw disk ID like "disk4"
+if [[ "$DISK_NAME" =~ ^disk[0-9]+$ ]]; then
+  DISK_ID="/dev/$DISK_NAME"
+else
+  DISK_ID=$(diskutil list | grep "$DISK_NAME" | awk '{print "/dev/" $NF}' | sed 's/s[0-9]*$//')
+fi
+
 # Find the most recent backup image
 IMAGE=$(ls -t "${OUTPUT_PATH}"/backup_3ds_*.img 2>/dev/null | head -n 1)
 
