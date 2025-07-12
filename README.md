@@ -1,6 +1,6 @@
 # 📦 Backup and Restore Nintendo 3DS SD Card (macOS)
 
-This repository provides two scripts to **fully back up** and **restore** SD cards used in **Nintendo 3DS** systems, using native macOS terminal tools.
+This repository provides three scripts to **fully back up**, **restore**, and **format** SD cards used in **Nintendo 3DS** systems, using native macOS terminal tools.
 
 ---
 
@@ -8,14 +8,14 @@ This repository provides two scripts to **fully back up** and **restore** SD car
 
 - `backup_3ds.sh` – Creates a full `.img` image of your 3DS SD card
 - `restore_3ds.sh` – Restores a `.img` image back to your SD card
-- `format_3ds:sd.sh` – Format 3DS SD card properly
+- `format_3ds_sd.sh` – Formats the 3DS SD card properly for use
 
 ---
 
 ## ⚙️ Requirements
 
 - macOS with Terminal access
-- Administrator permissions (sudo)
+- Administrator permissions (`sudo`)
 - SD card inserted via USB reader or SD slot
 
 ---
@@ -42,10 +42,11 @@ Look for a line like:
 
 ### 🧱 2. Back up the SD card
 
-Edit `backup_3ds.sh` and set the correct disk ID:
+Edit `config.yml` and set the correct `disk_name` (volume label) and `output_path`:
 
-```bash
-DISK_ID="/dev/disk5"
+```yaml
+disk_name: RENATO-3DS
+output_path: /Users/youruser/Backups
 ```
 
 Then run:
@@ -55,18 +56,11 @@ chmod +x backup_3ds.sh
 ./backup_3ds.sh
 ```
 
-The script will create a `.img` file on your Desktop with the current date and time in the filename.
-
 ---
 
 ### ♻️ 3. Restore the SD card
 
-Edit `restore_3ds.sh`:
-
-- Update the path to the `.img` file
-- Confirm the correct disk ID
-
-Then run:
+Ensure the most recent `.img` file is in the `output_path`. Then run:
 
 ```bash
 chmod +x restore_3ds.sh
@@ -77,30 +71,24 @@ You will be prompted to confirm before overwriting the SD card.
 
 ---
 
-### ♻️ 4. Format 3DS SD card
-
-Edit `format_3ds_sd.sh`:
-
-- Confirm the correct disk ID
-
-Then run:
+### 🧼 4. Format the 3DS SD card
 
 ```bash
 chmod +x format_3ds_sd.sh
 ./format_3ds_sd.sh
 ```
 
-You will be prompted to confirm before overwriting the SD card.
+You will be prompted to confirm before formatting. The script uses MBR + FAT32 (64KB clusters) format.
 
 ---
 
 ## 🧩 VSCode Integration (Optional)
 
-You can now run these scripts directly from **Visual Studio Code** using `zsh` as the interpreter.
+You can run the scripts directly from **Visual Studio Code** using `zsh`.
 
-### ▶️ Running via `launch.json`
+### ▶️ `launch.json`
 
-To enable this, add the following to your `.vscode/launch.json`:
+Add this to `.vscode/launch.json`:
 
 ```json
 {
@@ -142,33 +130,53 @@ To enable this, add the following to your `.vscode/launch.json`:
 
 > ⚠️ These scripts require `sudo`. You’ll be prompted to enter your password in the terminal during execution.
 
-### 💡 Tip
+---
 
-- Make sure the scripts have executable permission:  
+## 🔓 Optional: Run Without Prompting for `sudo` Password
 
-  ```bash
-  chmod +x backup_3ds.sh restore_3ds.sh format_3ds_sd.sh
-  ```
+You can allow these scripts to run **without typing your password**, using a secure `sudoers` rule.
 
-- Ensure `zsh` is installed (default in modern macOS versions).
+### Step 1: Open the `sudoers` file
+
+```bash
+sudo visudo
+```
+
+### Step 2: Add this line at the end (replace `youruser` with your actual macOS username):
+
+```bash
+youruser ALL=(ALL) NOPASSWD: /Users/youruser/Workspace/backup_3ds/backup_3ds.sh, /Users/youruser/Workspace/backup_3ds/restore_3ds.sh, /Users/youruser/Workspace/backup_3ds/format_3ds_sd.sh, /sbin/newfs_msdos
+```
+
+> 🔐 This allows only these scripts and the `newfs_msdos` formatter to run without a password prompt. It does **not** affect other `sudo` commands.
+
+### Step 3: Inside each script, make sure this logic is at the top:
+
+```bash
+if [[ "$EUID" -ne 0 ]]; then
+  exec sudo "$0" "$@"
+fi
+```
+
+This ensures the script self-elevates if not already run with `sudo`.
 
 ---
 
 ## 💡 Tips
 
 - **Unmount the SD card** before using these scripts
-- The image includes **partition table, bootloader, and data** — it's a full 1:1 clone
-- Great for backing up before modifying files like `boot.firm`, CIAs, or saves
-- Works with SD cards up to 128GB (or more depending on format)
+- The backup includes **partition table, bootloader, and data** — it's a full 1:1 clone
+- Useful before modifying files like `boot.firm`, CIAs, or save games
+- Works with SD cards up to 128GB or more
 
 ---
 
 ## ⚠️ Warning
 
-These scripts are powerful — double check you're targeting the correct disk. Incorrect use could wipe other drives.
+These scripts are powerful — always double check you're targeting the correct disk. Incorrect use could wipe important data.
 
 ---
 
 ## 📄 License
 
-For personal use. No warranty. Feel free to modify and adapt as needed.
+For personal use. No warranty. Feel free to modify and adapt.

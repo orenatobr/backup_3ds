@@ -1,12 +1,29 @@
 #!/bin/bash
+set -e
 
-# Path to the backup image (edit as needed)
-IMAGE="$HOME/Downloads/backup_3ds.img"
+# If not running as root, re-execute with sudo
+if [[ "$EUID" -ne 0 ]]; then
+  exec sudo "$0" "$@"
+fi
 
-# Path to the SD card device
-DISK_ID="/dev/disk5"
+# Read disk name and output path from config
+DISK_NAME=$(grep '^disk_name:' config.yml | awk '{print $2}')
+OUTPUT_PATH=$(grep '^output_path:' config.yml | awk '{print $2}')
+
+# Find the most recent backup image
+IMAGE=$(ls -t "${OUTPUT_PATH}"/backup_3ds_*.img 2>/dev/null | head -n 1)
+
+# Check if an image was found
+if [[ -z "$IMAGE" ]]; then
+  echo "❌ No backup image found in $OUTPUT_PATH"
+  exit 1
+fi
+
+# Resolve /dev/diskX from volume name
+DISK_ID=$(diskutil list | grep "$DISK_NAME" | awk '{print "/dev/" $NF}' | sed 's/s[0-9]*$//')
 
 echo "📥 Restoring image to SD card ($DISK_ID)..."
+echo "🗂️  Backup image: $IMAGE"
 echo "⚠️ This will overwrite all data on the SD card!"
 
 # Confirm action
